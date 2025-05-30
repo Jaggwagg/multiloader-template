@@ -1,4 +1,4 @@
-package com.example.examplemod.platform.services;
+package jaggwagg.template.platform.services;
 
 public interface IPlatformHelper {
 

@@ -1,7 +1,7 @@
-package com.example.examplemod.platform;
+package jaggwagg.template.platform;
 
-import com.example.examplemod.Constants;
-import com.example.examplemod.platform.services.IPlatformHelper;
+import jaggwagg.template.Constants;
+import jaggwagg.template.platform.services.IPlatformHelper;
 
 import java.util.ServiceLoader;
 
