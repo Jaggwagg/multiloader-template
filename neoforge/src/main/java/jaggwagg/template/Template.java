@@ -1,9 +1,10 @@
 package jaggwagg.template;
 
 import jaggwagg.template.config.TemplateConfig;
-import jaggwagg.template.server.block.ModBlocks;
-import jaggwagg.template.server.entity.ModEntities;
-import jaggwagg.template.server.item.ModItems;
+import jaggwagg.template.world.level.block.TemplateBlocks;
+import jaggwagg.template.world.level.entity.TemplateEntities;
+import jaggwagg.template.world.level.item.TemplateCreativeTabs;
+import jaggwagg.template.world.level.item.TemplateItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -17,12 +18,13 @@ public class Template {
         Constants.LOG.info("NeoForge mod!");
         TemplateCommon.init();
 
-        ModBlocks.MOD_BLOCKS.register(modEventBus);
-        ModItems.MOD_ITEMS.register(modEventBus);
-        ModEntities.MOD_ENTITIES.register(modEventBus);
+        TemplateBlocks.MOD_BLOCKS.register(modEventBus);
+        TemplateItems.MOD_ITEMS.register(modEventBus);
+        TemplateEntities.MOD_ENTITIES.register(modEventBus);
+        TemplateCreativeTabs.CREATIVE_TABS.register(modEventBus);
 
         modEventBus.register(this);
-        modEventBus.register(ModEntities.class);
+        modEventBus.register(TemplateEntities.class);
 
         container.registerConfig(ModConfig.Type.COMMON, TemplateConfig.SPEC);
     }
@@ -31,7 +33,7 @@ public class Template {
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             Constants.LOG.info("Blocks registered successfully");
-            ModBlocks.Blocks.TEMPLATE_BLOCK.getBlock();
+            TemplateBlocks.Blocks.TEMPLATE_BLOCK.getBlock();
         });
     }
 }

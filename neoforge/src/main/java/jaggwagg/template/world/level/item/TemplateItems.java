@@ -1,14 +1,18 @@
-package jaggwagg.template.server.item;
+package jaggwagg.template.world.level.item;
 
 import jaggwagg.template.Constants;
 import net.minecraft.world.item.Item;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class ModItems {
+@EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+public class TemplateItems {
     public static final DeferredRegister.Items MOD_ITEMS = DeferredRegister.createItems(Constants.MOD_ID);
 
     // Force loads enum
@@ -30,8 +34,17 @@ public class ModItems {
             return this.id;
         }
 
-        public Item getItem() {
-            return this.item.get();
+        public DeferredItem<Item> getItem() {
+            return this.item;
+        }
+    }
+
+    @SubscribeEvent
+    public static void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
+            for (Items item : Items.values()) {
+                event.accept(item.getItem());
+            }
         }
     }
 }

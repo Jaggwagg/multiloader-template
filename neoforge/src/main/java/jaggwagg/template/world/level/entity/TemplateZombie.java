@@ -1,4 +1,4 @@
-package jaggwagg.template.server.entity;
+package jaggwagg.template.world.level.entity;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;

@@ -1,7 +1,7 @@
 package jaggwagg.template.client;
 
 import jaggwagg.template.Constants;
-import jaggwagg.template.server.entity.ModEntities;
+import jaggwagg.template.world.level.entity.TemplateEntities;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -16,7 +16,7 @@ public class TemplateClient {
 
     @SubscribeEvent
     public void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        for (ModEntities.Entities entity : ModEntities.Entities.values()) {
+        for (TemplateEntities.Entities entity : TemplateEntities.Entities.values()) {
             entity.registerRenderer(event);
         }
     }

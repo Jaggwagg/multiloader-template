@@ -1,18 +1,23 @@
-package jaggwagg.template.server.block;
+package jaggwagg.template.world.level.block;
 
 import jaggwagg.template.Constants;
-import jaggwagg.template.server.item.ModItems;
+import jaggwagg.template.world.level.item.TemplateCreativeTabs;
+import jaggwagg.template.world.level.item.TemplateItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class ModBlocks {
+@EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+public class TemplateBlocks {
     public static final DeferredRegister.Blocks MOD_BLOCKS = DeferredRegister.createBlocks(Constants.MOD_ID);
 
     // Force loads enum
@@ -34,7 +39,7 @@ public class ModBlocks {
             this.block = MOD_BLOCKS.register(this.id, blockSupplier);
 
             if (hasBlockItem) {
-                ModItems.MOD_ITEMS.registerSimpleBlockItem(this.block, new Item.Properties());
+                TemplateItems.MOD_ITEMS.registerSimpleBlockItem(this.block, new Item.Properties());
             }
         }
 
@@ -42,8 +47,17 @@ public class ModBlocks {
             return this.id;
         }
 
-        public Block getBlock() {
-            return this.block.get();
+        public DeferredBlock<Block> getBlock() {
+            return this.block;
+        }
+    }
+
+    @SubscribeEvent
+    public static void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
+            for (Blocks block : Blocks.values()) {
+                event.accept(block.getBlock());
+            }
         }
     }
 }
