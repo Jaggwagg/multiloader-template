@@ -20,7 +20,6 @@ public class TemplateBlocks {
     private static final Blocks[] BLOCKS = Blocks.values();
 
     public enum Blocks {
-
         TEMPLATE_BLOCK(() -> new Block(BlockBehaviour.Properties.of()
                 .destroyTime(1.0f)
                 .explosionResistance(1.0f)
