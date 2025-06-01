@@ -1,16 +1,19 @@
 package jaggwagg.template;
 
+import jaggwagg.template.config.TemplateConfig;
 import jaggwagg.template.server.block.ModBlocks;
 import jaggwagg.template.server.entity.ModEntities;
 import jaggwagg.template.server.item.ModItems;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod(Constants.MOD_ID)
 public class Template {
-    public Template(IEventBus modEventBus) {
+    public Template(IEventBus modEventBus, ModContainer container) {
         Constants.LOG.info("NeoForge mod!");
         TemplateCommon.init();
 
@@ -20,6 +23,8 @@ public class Template {
 
         modEventBus.register(this);
         modEventBus.register(ModEntities.class);
+
+        container.registerConfig(ModConfig.Type.COMMON, TemplateConfig.SPEC);
     }
 
     @SubscribeEvent
