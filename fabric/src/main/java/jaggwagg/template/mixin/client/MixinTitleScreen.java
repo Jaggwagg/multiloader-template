@@ -1,4 +1,4 @@
-package jaggwagg.template.mixin;
+package jaggwagg.template.mixin.client;
 
 import jaggwagg.template.Constants;
 import net.minecraft.client.Minecraft;

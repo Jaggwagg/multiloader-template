@@ -3,42 +3,27 @@ package jaggwagg.template.world.level.entity;
 import jaggwagg.template.Constants;
 import jaggwagg.template.client.renderer.entity.TemplateZombieRenderer;
 import jaggwagg.template.level.entity.TemplateZombie;
-import jaggwagg.template.world.level.item.TemplateCreativeTabs;
-import jaggwagg.template.world.level.item.TemplateItems;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class TemplateEntities {
-    public static final DeferredRegister<EntityType<?>> MOD_ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Constants.MOD_ID);
-
     // Force loads enum
     @SuppressWarnings("unused")
     private static final Entities[] ENTITIES = Entities.values();
-
-    @SubscribeEvent
-    public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        for (Entities entity : Entities.values()) {
-            entity.registerAttributes(event);
-        }
-    }
 
     public enum Entities {
         TEMPLATE_ZOMBIE(() -> EntityType.Builder.of(TemplateZombie::new, MobCategory.MONSTER)
@@ -49,8 +34,8 @@ public class TemplateEntities {
                 TemplateZombieRenderer::new);
 
         private final String id;
-        private final DeferredHolder<EntityType<?>, EntityType<?>> entityType;
-        private final DeferredItem<Item> spawnEgg;
+        private final EntityType<?> entityType;
+        private final Item spawnEgg;
         private final Supplier<AttributeSupplier.Builder> attributeSupplier;
         private final EntityRendererProvider<?> rendererProvider;
 
@@ -64,27 +49,18 @@ public class TemplateEntities {
 
         <T extends Entity> Entities(Supplier<EntityType<T>> entityTypeSupplier, boolean hasSpawnEgg, int primaryColor, int secondaryColor, Supplier<AttributeSupplier.Builder> attributeSupplier, EntityRendererProvider<T> rendererProvider) {
             this.id = this.name().toLowerCase(Locale.ROOT);
-            this.entityType = MOD_ENTITIES.register(this.id, entityTypeSupplier);
+            ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, this.id);
+
+            this.entityType = Registry.register(BuiltInRegistries.ENTITY_TYPE, resourceLocation, entityTypeSupplier.get());
             this.attributeSupplier = attributeSupplier;
             this.rendererProvider = rendererProvider;
 
             if (hasSpawnEgg) {
-                this.spawnEgg = TemplateItems.MOD_ITEMS.register(this.id + "_spawn_egg",
-                        () -> new SpawnEggItem(this.getEntityType(), primaryColor, secondaryColor, new Item.Properties()));
+                ResourceLocation eggLocation = ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, this.id + "_spawn_egg");
+                this.spawnEgg = Registry.register(BuiltInRegistries.ITEM, eggLocation,
+                        new SpawnEggItem(this.getEntityType(), primaryColor, secondaryColor, new Item.Properties()));
             } else {
                 this.spawnEgg = null;
-            }
-        }
-
-        public void registerAttributes(EntityAttributeCreationEvent event) {
-            if (this.attributeSupplier != null) {
-                event.put(this.getEntityType(), this.attributeSupplier.get().build());
-            }
-        }
-
-        public void registerRenderer(EntityRenderersEvent.RegisterRenderers event) {
-            if (this.rendererProvider != null) {
-                event.registerEntityRenderer(this.getEntityType(), this.rendererProvider);
             }
         }
 
@@ -94,21 +70,42 @@ public class TemplateEntities {
 
         @SuppressWarnings("unchecked")
         public <T extends Entity> EntityType<T> getEntityType() {
-            return (EntityType<T>)this.entityType.get();
+            return (EntityType<T>) this.entityType;
         }
 
-        public DeferredItem<Item> getSpawnEgg() {
+        public Item getSpawnEgg() {
             return this.spawnEgg;
+        }
+
+        public Supplier<AttributeSupplier.Builder> getAttributeSupplier() {
+            return this.attributeSupplier;
+        }
+
+        public EntityRendererProvider<?> getRendererProvider() {
+            return this.rendererProvider;
         }
     }
 
-    @SubscribeEvent
-    public static void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
-            for (Entities entity : Entities.values()) {
-                if (entity.getSpawnEgg() != null) {
-                    event.accept(entity.getSpawnEgg());
-                }
+    public static void init() {
+        for (Entities entity : Entities.values()) {
+            if (entity.getAttributeSupplier() != null) {
+                FabricDefaultAttributeRegistry.register(entity.getEntityType(), entity.getAttributeSupplier().get());
+            }
+        }
+    }
+
+    public static void initClient() {
+        for (Entities entity : Entities.values()) {
+            if (entity.getRendererProvider() != null) {
+                EntityRendererRegistry.register(entity.getEntityType(), entity.getRendererProvider());
+            }
+        }
+    }
+
+    public static void buildCreativeTabContents(FabricItemGroupEntries entries) {
+        for (Entities entity : Entities.values()) {
+            if (entity.getSpawnEgg() != null) {
+                entries.accept(entity.getSpawnEgg());
             }
         }
     }
