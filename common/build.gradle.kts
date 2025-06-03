@@ -24,15 +24,14 @@ dependencies {
     annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5")
 }
 
-configurations {
-    create("commonJava") {
-        isCanBeResolved = false
-        isCanBeConsumed = true
-    }
-    create("commonResources") {
-        isCanBeResolved = false
-        isCanBeConsumed = true
-    }
+val commonJava by configurations.creating {
+    isCanBeResolved = false
+    isCanBeConsumed = true
+}
+
+val commonResources by configurations.creating {
+    isCanBeResolved = false
+    isCanBeConsumed = true
 }
 
 artifacts {
