@@ -1,8 +1,7 @@
-package jaggwagg.template.world.level.entity;
+package jaggwagg.template.world.entity;
 
 import jaggwagg.template.Constants;
 import jaggwagg.template.client.renderer.entity.TemplateZombieRenderer;
-import jaggwagg.template.level.entity.TemplateZombie;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -20,8 +19,7 @@ import net.minecraft.world.item.SpawnEggItem;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class TemplateEntities {
-    // Force loads enum
+public class ModEntities {
     @SuppressWarnings("unused")
     private static final Entities[] ENTITIES = Entities.values();
 

@@ -1,8 +1,8 @@
 package jaggwagg.template.world.level.block;
 
 import jaggwagg.template.Constants;
-import jaggwagg.template.world.level.item.TemplateCreativeTabs;
-import jaggwagg.template.world.level.item.TemplateItems;
+import jaggwagg.template.world.level.item.ModCreativeTabs;
+import jaggwagg.template.world.level.item.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -17,10 +17,8 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public class TemplateBlocks {
+public class ModBlocks {
     public static final DeferredRegister.Blocks MOD_BLOCKS = DeferredRegister.createBlocks(Constants.MOD_ID);
-
-    // Force loads enum
     @SuppressWarnings("unused")
     private static final Blocks[] BLOCKS = Blocks.values();
 
@@ -39,7 +37,7 @@ public class TemplateBlocks {
             this.block = MOD_BLOCKS.register(this.id, blockSupplier);
 
             if (hasBlockItem) {
-                TemplateItems.MOD_ITEMS.registerSimpleBlockItem(this.block, new Item.Properties());
+                ModItems.MOD_ITEMS.registerSimpleBlockItem(this.block, new Item.Properties());
             }
         }
 
@@ -54,7 +52,7 @@ public class TemplateBlocks {
 
     @SubscribeEvent
     public static void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
+        if (event.getTabKey() == ModCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
             for (Blocks block : Blocks.values()) {
                 event.accept(block.getBlock());
             }

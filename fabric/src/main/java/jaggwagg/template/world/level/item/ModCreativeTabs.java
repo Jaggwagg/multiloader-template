@@ -1,7 +1,7 @@
 package jaggwagg.template.world.level.item;
 
 import jaggwagg.template.Constants;
-import jaggwagg.template.world.level.block.TemplateBlocks;
+import jaggwagg.template.world.level.block.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -15,15 +15,14 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class TemplateCreativeTabs {
-    // Force loads enum
+public class ModCreativeTabs {
     @SuppressWarnings("unused")
     private static final CreativeTabs[] TABS = CreativeTabs.values();
 
     public enum CreativeTabs {
         TEMPLATE_TAB(() -> FabricItemGroup.builder()
                 .title(Component.translatable("creativetab.template.template_tab"))
-                .icon(() -> new ItemStack(TemplateBlocks.Blocks.TEMPLATE_BLOCK.getBlock()))
+                .icon(() -> new ItemStack(ModBlocks.Blocks.TEMPLATE_BLOCK.getBlock()))
                 .build());
 
         private final String id;

@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public class TemplateConfig {
+public class ModConfig {
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec SPEC = BUILDER.build();
 
@@ -25,7 +25,7 @@ public class TemplateConfig {
         ITEM_STRINGS("items",
                 List.of("minecraft:iron_ingot"),
                 "A list of items to log on common setup.",
-                TemplateConfig::validateItemName),
+                ModConfig::validateItemName),
 
         EXAMPLE_INT("exampleInt",
                 42,

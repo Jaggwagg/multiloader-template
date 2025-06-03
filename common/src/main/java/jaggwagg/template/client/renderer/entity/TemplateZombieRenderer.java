@@ -1,7 +1,7 @@
 package jaggwagg.template.client.renderer.entity;
 
 import jaggwagg.template.Constants;
-import jaggwagg.template.level.entity.TemplateZombie;
+import jaggwagg.template.world.entity.TemplateZombie;
 import net.minecraft.client.model.ZombieModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

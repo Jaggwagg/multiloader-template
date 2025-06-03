@@ -10,8 +10,7 @@ import net.minecraft.world.item.Item;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class TemplateItems {
-    // Force loads enum
+public class ModItems {
     @SuppressWarnings("unused")
     private static final Items[] ITEMS = Items.values();
 

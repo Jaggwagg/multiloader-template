@@ -1,9 +1,9 @@
 package jaggwagg.template;
 
-import jaggwagg.template.world.level.block.TemplateBlocks;
-import jaggwagg.template.world.level.entity.TemplateEntities;
-import jaggwagg.template.world.level.item.TemplateCreativeTabs;
-import jaggwagg.template.world.level.item.TemplateItems;
+import jaggwagg.template.world.entity.ModEntities;
+import jaggwagg.template.world.level.block.ModBlocks;
+import jaggwagg.template.world.level.item.ModCreativeTabs;
+import jaggwagg.template.world.level.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 
@@ -11,17 +11,17 @@ public class Template implements ModInitializer {
     @Override
     public void onInitialize() {
         Constants.LOG.info("Hello Fabric world!");
-        TemplateCommon.init();
-        TemplateBlocks.init();
-        TemplateItems.init();
-        TemplateEntities.init();
-        TemplateCreativeTabs.init();
+        Common.init();
+        ModBlocks.init();
+        ModItems.init();
+        ModEntities.init();
+        ModCreativeTabs.init();
 
-        ItemGroupEvents.modifyEntriesEvent(TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getKey())
-                .register(TemplateBlocks::buildCreativeTabContents);
-        ItemGroupEvents.modifyEntriesEvent(TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getKey())
-                .register(TemplateItems::buildCreativeTabContents);
-        ItemGroupEvents.modifyEntriesEvent(TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getKey())
-                .register(TemplateEntities::buildCreativeTabContents);
+        ItemGroupEvents.modifyEntriesEvent(ModCreativeTabs.CreativeTabs.TEMPLATE_TAB.getKey())
+                .register(ModBlocks::buildCreativeTabContents);
+        ItemGroupEvents.modifyEntriesEvent(ModCreativeTabs.CreativeTabs.TEMPLATE_TAB.getKey())
+                .register(ModItems::buildCreativeTabContents);
+        ItemGroupEvents.modifyEntriesEvent(ModCreativeTabs.CreativeTabs.TEMPLATE_TAB.getKey())
+                .register(ModEntities::buildCreativeTabContents);
     }
 }

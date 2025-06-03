@@ -14,8 +14,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import java.util.Locale;
 import java.util.function.Supplier;
 
-public class TemplateBlocks {
-    // Force loads enum
+public class ModBlocks {
     @SuppressWarnings("unused")
     private static final Blocks[] BLOCKS = Blocks.values();
 

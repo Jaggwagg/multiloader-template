@@ -19,7 +19,7 @@
             "jaggwagg.template.Template"
         ],
         "client": [
-            "jaggwagg.template.client.TemplateClient"
+          "jaggwagg.template.client.ModClient"
         ]
     },
     "mixins": [

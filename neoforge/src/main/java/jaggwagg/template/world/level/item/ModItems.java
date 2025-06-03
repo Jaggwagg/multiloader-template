@@ -12,10 +12,8 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public class TemplateItems {
+public class ModItems {
     public static final DeferredRegister.Items MOD_ITEMS = DeferredRegister.createItems(Constants.MOD_ID);
-
-    // Force loads enum
     @SuppressWarnings("unused")
     private static final Items[] ITEMS = Items.values();
 
@@ -41,7 +39,7 @@ public class TemplateItems {
 
     @SubscribeEvent
     public static void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
+        if (event.getTabKey() == ModCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
             for (Items item : Items.values()) {
                 event.accept(item.getItem());
             }

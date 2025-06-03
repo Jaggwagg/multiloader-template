@@ -1,10 +1,9 @@
-package jaggwagg.template.world.level.entity;
+package jaggwagg.template.world.entity;
 
 import jaggwagg.template.Constants;
 import jaggwagg.template.client.renderer.entity.TemplateZombieRenderer;
-import jaggwagg.template.level.entity.TemplateZombie;
-import jaggwagg.template.world.level.item.TemplateCreativeTabs;
-import jaggwagg.template.world.level.item.TemplateItems;
+import jaggwagg.template.world.level.item.ModCreativeTabs;
+import jaggwagg.template.world.level.item.ModItems;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.Entity;
@@ -26,10 +25,8 @@ import java.util.Locale;
 import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Constants.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
-public class TemplateEntities {
+public class ModEntities {
     public static final DeferredRegister<EntityType<?>> MOD_ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Constants.MOD_ID);
-
-    // Force loads enum
     @SuppressWarnings("unused")
     private static final Entities[] ENTITIES = Entities.values();
 
@@ -62,6 +59,7 @@ public class TemplateEntities {
             this(entityTypeSupplier, hasSpawnEgg, primaryColor, secondaryColor, attributeSupplier, null);
         }
 
+        @SuppressWarnings("deprecation")
         <T extends Entity> Entities(Supplier<EntityType<T>> entityTypeSupplier, boolean hasSpawnEgg, int primaryColor, int secondaryColor, Supplier<AttributeSupplier.Builder> attributeSupplier, EntityRendererProvider<T> rendererProvider) {
             this.id = this.name().toLowerCase(Locale.ROOT);
             this.entityType = MOD_ENTITIES.register(this.id, entityTypeSupplier);
@@ -69,7 +67,7 @@ public class TemplateEntities {
             this.rendererProvider = rendererProvider;
 
             if (hasSpawnEgg) {
-                this.spawnEgg = TemplateItems.MOD_ITEMS.register(this.id + "_spawn_egg",
+                this.spawnEgg = ModItems.MOD_ITEMS.register(this.id + "_spawn_egg",
                         () -> new SpawnEggItem(this.getEntityType(), primaryColor, secondaryColor, new Item.Properties()));
             } else {
                 this.spawnEgg = null;
@@ -104,7 +102,7 @@ public class TemplateEntities {
 
     @SubscribeEvent
     public static void buildCreativeTabContents(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == TemplateCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
+        if (event.getTabKey() == ModCreativeTabs.CreativeTabs.TEMPLATE_TAB.getTab().getKey()) {
             for (Entities entity : Entities.values()) {
                 if (entity.getSpawnEgg() != null) {
                     event.accept(entity.getSpawnEgg());
