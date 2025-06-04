@@ -16,7 +16,6 @@ java {
 repositories {
     mavenCentral()
 
-    // Sponge repository with exclusive content
     exclusiveContent {
         forRepository {
             maven {
@@ -27,7 +26,6 @@ repositories {
         filter { includeGroupAndSubgroups("org.spongepowered") }
     }
 
-    // ParchmentMC and NeoForge repositories with exclusive content
     exclusiveContent {
         forRepositories(
             maven {
@@ -43,7 +41,6 @@ repositories {
     }
 }
 
-// Declare capabilities on the outgoing configurations
 listOf("apiElements", "runtimeElements", "sourcesElements", "javadocElements").forEach { variant ->
     configurations.named(variant) {
         outgoing {

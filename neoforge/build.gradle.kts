@@ -6,7 +6,6 @@ plugins {
 neoForge {
     version = property("neoforge_version") as String
 
-    // Automatically enable AccessTransformers if the file exists
     val at = project(":common").file("src/main/resources/META-INF/accesstransformer.cfg")
     if (at.exists()) {
         accessTransformers.from(at.absolutePath)
